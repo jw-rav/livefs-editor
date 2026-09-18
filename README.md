@@ -130,7 +130,8 @@ code, that aborts the run.
 
 **argument**: `dest`
 
-Copy a file. The paths `source` and `dest` are interpreted in a special way:
+Copy a file or a directory tree. The paths `source` and `dest` are
+interpreted in a special way:
 
  * Absolute paths (i.e. paths starting with '/') are handled as is.
  * A magic prefix of '$LAYERS[n]' is handled by mounting the n'th layer
@@ -152,6 +153,16 @@ to replace the initrd.  And something like this:
 ```
 
 to overwrite sources.list in the base layer.
+
+If source is a directory, its contents are merged recursively into
+dest. Note that the behaviour differs from cp(1) when dest already
+exists. In this case, cp(1) would copy source beneath dest while
+this implementation will merge the contents of source into the
+existing dest directory
+
+```
+--cp /path/to/sources.list.d '$LAYERS[0]/etc/apt/sources.list.d'
+```
 
 ### rm
 
