@@ -154,15 +154,15 @@ to replace the initrd.  And something like this:
 
 to overwrite sources.list in the base layer.
 
-If source is a directory, its contents are merged recursively into
-dest. Note that the behaviour differs from cp(1) when dest already
-exists. In this case, cp(1) would copy source beneath dest while
-this implementation will merge the contents of source into the
-existing dest directory
-
-```
---cp /path/to/sources.list.d '$LAYERS[0]/etc/apt/sources.list.d'
-```
+If source is a directory, there are two points worth to be aware of:
+* if dest exists, source will NOT be cpied beneath dest as you would
+  expect from the cp(1) unix utility. Instead, content from source
+  will be merged into dest. That is: source/foo will become dest/foo
+  and not dest/source/foo.
+* permissions for intermediate directories are copied from the source
+  tree. In contrast, if source is NOT a directory, intermediate
+  directories are created on the fly and get their permissions from
+  the umask setting at the time livefs-editor was running.
 
 ### rm
 
